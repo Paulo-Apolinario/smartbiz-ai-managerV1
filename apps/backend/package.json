@@ -1,0 +1,45 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend da aplicação Smartbiz AI",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+  "dev": "tsx watch src/server.ts",
+  "start": "node dist/server.js",
+  "build": "tsc",
+  "prisma:generate": "prisma generate",
+  "prisma:migrate": "prisma migrate dev",
+  "prisma:studio": "prisma studio"
+  
+},
+  "keywords": [
+    "fastify",
+    "prisma",
+    "nodejs",
+    "backend",
+    "api"
+  ],
+  "author": "Paulo",
+  "license": "ISC",
+  "packageManager": "pnpm@10.29.3",
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/jwt": "^10.0.0",
+    "@prisma/client": "^5.21.1",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.15",
+    "pino": "^9.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "prisma": "^5.21.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
