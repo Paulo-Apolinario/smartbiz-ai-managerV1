@@ -1,12 +1,4 @@
-import Fastify from 'fastify'
-
-const app = Fastify({
-  logger: true
-})
-
-app.get('/', async () => {
-  return { message: 'SmartBiz AI Backend Running 🚀' }
-})
+import { app } from './app'
 
 const start = async () => {
   try {
