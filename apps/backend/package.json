@@ -5,14 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-  "dev": "tsx watch src/server.ts",
-  "start": "node dist/server.js",
-  "build": "tsc",
-  "prisma:generate": "prisma generate",
-  "prisma:migrate": "prisma migrate dev",
-  "prisma:studio": "prisma studio"
-  
-},
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
   "keywords": [
     "fastify",
     "prisma",
@@ -28,6 +27,7 @@
     "@fastify/helmet": "^13.0.2",
     "@fastify/jwt": "^10.0.0",
     "@prisma/client": "^5.21.1",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "dotenv": "^16.4.5",
     "fastify": "^5.0.0",
@@ -37,6 +37,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.2.3",
     "prisma": "^5.21.1",
     "tsx": "^4.21.0",
