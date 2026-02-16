@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 import fastifyJwt from '@fastify/jwt'
-
+import { ordersRoutes } from "./routes/orders"
 import { authRoutes } from './routes/auth'
 import { clientRoutes } from './routes/clients'
 import { productRoutes } from './routes/products'
@@ -20,6 +20,7 @@ app.register(authRoutes, { prefix: '/auth' })
 app.register(clientRoutes, { prefix: '/clients' })
 app.register(productRoutes, { prefix: '/products' })
 app.register(userRoutes, { prefix: '/users' })
+app.register(ordersRoutes, { prefix: '/orders' })
 
 // Health check
 app.get('/', async () => {

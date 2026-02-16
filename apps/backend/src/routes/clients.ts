@@ -1,15 +1,17 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyInstance, FastifyReply } from 'fastify'
 import { prisma } from '../lib/prisma'
 import { authMiddleware } from '../middlewares/auth.middleware'
+import { authorize } from '../middlewares/authorize'
 
 export async function clientRoutes(app: FastifyInstance) {
 
   // 🔒 Listar clientes do tenant
   app.get(
     '/',
-    { preHandler: [authMiddleware] },
+    {
+      preHandler: [authMiddleware]
+    },
     async (request: any, reply: FastifyReply) => {
-
       const clients = await prisma.client.findMany({
         where: {
           tenantId: request.user.tenantId
@@ -20,15 +22,13 @@ export async function clientRoutes(app: FastifyInstance) {
     }
   )
 
-  // 🔒 Criar cliente (ADMIN apenas)
+  // 🔒 Criar cliente (ADMIN, MANAGER, SALES)
   app.post(
     '/',
-    { preHandler: [authMiddleware] },
+    {
+      preHandler: [authMiddleware, authorize(['ADMIN', 'MANAGER', 'SALES'])]
+    },
     async (request: any, reply: FastifyReply) => {
-
-      if (request.user.role !== 'ADMIN') {
-        return reply.status(403).send({ message: 'Forbidden' })
-      }
 
       const { name, email, phone } = request.body as {
         name: string

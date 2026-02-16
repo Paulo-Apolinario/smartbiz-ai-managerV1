@@ -14,60 +14,96 @@ enum Role {
   USER
 }
 
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
 model Tenant {
-  id        String    @id @default(uuid())
-  name      String
+  id   String @id @default(uuid())
+  name String
 
-  users     User[]
-  clients   Client[]
-  products  Product[]
+  users    User[]
+  clients  Client[]
+  products Product[]
+  orders   Order[] // ✅ RELAÇÃO ADICIONADA
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String    @unique
-  password  String
-  role      Role      @default(USER)
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  role     Role   @default(USER)
 
-  tenantId  String
-  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([tenantId])
 }
 
 model Client {
-  id        String    @id @default(uuid())
-  name      String
-  email     String?
-  phone     String?
+  id    String  @id @default(uuid())
+  name  String
+  email String?
+  phone String?
 
-  tenantId  String
-  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  orders Order[] // ✅ RELAÇÃO ADICIONADA
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([tenantId])
 }
 
 model Product {
-  id        String    @id @default(uuid())
-  name      String
-  price     Float
-  stock     Int
+  id    String @id @default(uuid())
+  name  String
+  price Float
+  stock Int
 
-  tenantId  String
-  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  orderItems OrderItem[] // ✅ RELAÇÃO ADICIONADA
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([tenantId])
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  tenantId  String
+  clientId  String
+  total     Float
+  status    OrderStatus @default(PENDING)
+  createdBy String
+  createdAt DateTime    @default(now())
+
+  tenant Tenant      @relation(fields: [tenantId], references: [id])
+  client Client      @relation(fields: [clientId], references: [id])
+  items  OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 }

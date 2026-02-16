@@ -1,15 +1,17 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyInstance, FastifyReply } from 'fastify'
 import { prisma } from '../lib/prisma'
 import { authMiddleware } from '../middlewares/auth.middleware'
+import { authorize } from '../middlewares/authorize'
 
 export async function productRoutes(app: FastifyInstance) {
 
   // 🔒 Listar produtos do tenant
   app.get(
     '/',
-    { preHandler: [authMiddleware] },
+    {
+      preHandler: [authMiddleware]
+    },
     async (request: any, reply: FastifyReply) => {
-
       const products = await prisma.product.findMany({
         where: {
           tenantId: request.user.tenantId
@@ -20,15 +22,13 @@ export async function productRoutes(app: FastifyInstance) {
     }
   )
 
-  // 🔒 Criar produto (ADMIN apenas)
+  // 🔒 Criar produto (ADMIN e MANAGER)
   app.post(
     '/',
-    { preHandler: [authMiddleware] },
+    {
+      preHandler: [authMiddleware, authorize(['ADMIN', 'MANAGER'])]
+    },
     async (request: any, reply: FastifyReply) => {
-
-      if (request.user.role !== 'ADMIN') {
-        return reply.status(403).send({ message: 'Forbidden' })
-      }
 
       const { name, price, stock } = request.body as {
         name: string
