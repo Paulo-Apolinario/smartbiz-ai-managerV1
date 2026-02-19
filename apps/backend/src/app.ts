@@ -6,10 +6,19 @@ import { clientRoutes } from './routes/clients'
 import { productRoutes } from './routes/products'
 import { userRoutes } from './routes/users'
 import { dashboardRoutes } from './routes/dashboard'
+import cors from '@fastify/cors'
+import { aiRoutes } from './routes/ai'
+
 
 
 export const app = Fastify({
   logger: true
+})
+
+app.register(cors, {
+  origin: ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 })
 
 app.register(fastifyJwt, {
@@ -23,6 +32,7 @@ app.register(productRoutes, { prefix: '/products' })
 app.register(userRoutes, { prefix: '/users' })
 app.register(ordersRoutes, { prefix: '/orders' })
 app.register(dashboardRoutes, { prefix: '/dashboard' })
+app.register(aiRoutes, { prefix: '/ai' })
 
 // Health check
 app.get('/', async () => {

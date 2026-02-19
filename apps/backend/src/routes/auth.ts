@@ -1,9 +1,9 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import { prisma } from '../lib/prisma'
 import bcrypt from 'bcrypt'
+import { prisma } from '../lib/prisma'
+import { authMiddleware } from '../middlewares/auth.middleware'
 
 export async function authRoutes(app: FastifyInstance) {
-
   // ✅ REGISTER (cria tenant + admin)
   app.post(
     '/register',
@@ -88,6 +88,27 @@ export async function authRoutes(app: FastifyInstance) {
       })
 
       return reply.send({ token })
+    }
+  )
+
+  // ✅ ME (retorna dados do usuário logado)
+  app.get(
+    '/me',
+    { preHandler: [authMiddleware] },
+    async (request: any, reply: FastifyReply) => {
+      const user = await prisma.user.findUnique({
+        where: { id: request.user.userId },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          tenantId: true
+        }
+      })
+
+      if (!user) return reply.status(404).send({ message: 'User not found' })
+      return reply.send(user)
     }
   )
 }
