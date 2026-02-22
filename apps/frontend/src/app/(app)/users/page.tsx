@@ -78,10 +78,7 @@ export default function UsersPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Usuários</h1>
-          <p className="text-sm text-muted-foreground">
-            Gestão interna do tenant (ADMIN).
-          </p>
-        </div>
+          </div>
 
         <div className="flex gap-2">
           <Button variant="outline" onClick={load}>Atualizar</Button>

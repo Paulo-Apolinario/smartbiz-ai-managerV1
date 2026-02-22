@@ -82,7 +82,7 @@ export default function OrdersPage() {
       items: [{ productId, quantity: q }]
     })
 
-    alert('Pedido criado com sucesso! (estoque debitado)')
+    alert('Pedido criado com sucesso!')
     setQuantity('1')
     await load()
   }
@@ -118,16 +118,13 @@ export default function OrdersPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Vendas</h1>
-          <p className="text-sm text-muted-foreground">
-            Criação de pedidos (Order) com débito automático de estoque + gestão de status.
-          </p>
-        </div>
+          </div>
 
         <div className="flex gap-2">
           <Button variant="outline" onClick={load} disabled={loading}>
             {loading ? 'Carregando...' : 'Atualizar'}
           </Button>
-          <Badge variant="secondary">Orders</Badge>
+          
         </div>
       </div>
 

@@ -7,6 +7,37 @@ export async function authRoutes(app: FastifyInstance) {
   // ✅ REGISTER (cria tenant + admin)
   app.post(
     '/register',
+    {
+      // ✅ ADICIONADO: schema Swagger/OpenAPI
+      schema: {
+        tags: ['Auth'],
+        summary: 'Registrar tenant + usuário ADMIN',
+        description: 'Cria um tenant e um usuário ADMIN e retorna um JWT.',
+        body: {
+          type: 'object',
+          required: ['companyName', 'name', 'email', 'password'],
+          additionalProperties: false,
+          properties: {
+            companyName: { type: 'string', minLength: 2, examples: ['Minha Empresa LTDA'] },
+            name: { type: 'string', minLength: 2, examples: ['Paulo Roberto'] },
+            email: { type: 'string', format: 'email', examples: ['paulo@email.com'] },
+            password: { type: 'string', minLength: 6, examples: ['123456'] },
+          },
+        },
+        response: {
+          201: {
+            type: 'object',
+            required: ['token'],
+            properties: { token: { type: 'string' } },
+          },
+          400: {
+            type: 'object',
+            required: ['message'],
+            properties: { message: { type: 'string' } },
+          },
+        },
+      },
+    },
     async (
       request: FastifyRequest<{
         Body: {
@@ -57,6 +88,35 @@ export async function authRoutes(app: FastifyInstance) {
   // ✅ LOGIN (gera token para usuários já existentes)
   app.post(
     '/login',
+    {
+      // ✅ ADICIONADO: schema Swagger/OpenAPI
+      schema: {
+        tags: ['Auth'],
+        summary: 'Login',
+        description: 'Autentica usuário e retorna um JWT.',
+        body: {
+          type: 'object',
+          required: ['email', 'password'],
+          additionalProperties: false,
+          properties: {
+            email: { type: 'string', format: 'email', examples: ['paulo@email.com'] },
+            password: { type: 'string', minLength: 1, examples: ['123456'] },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            required: ['token'],
+            properties: { token: { type: 'string' } },
+          },
+          400: {
+            type: 'object',
+            required: ['message'],
+            properties: { message: { type: 'string' } },
+          },
+        },
+      },
+    },
     async (
       request: FastifyRequest<{
         Body: {
@@ -94,7 +154,34 @@ export async function authRoutes(app: FastifyInstance) {
   // ✅ ME (retorna dados do usuário logado)
   app.get(
     '/me',
-    { preHandler: [authMiddleware] },
+    {
+      preHandler: [authMiddleware],
+      // ✅ ADICIONADO: schema Swagger/OpenAPI
+      schema: {
+        tags: ['Auth'],
+        summary: 'Usuário logado (me)',
+        description: 'Retorna os dados do usuário autenticado via JWT.',
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: {
+            type: 'object',
+            required: ['id', 'name', 'email', 'role', 'tenantId'],
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              email: { type: 'string', format: 'email' },
+              role: { type: 'string' },
+              tenantId: { type: 'string' },
+            },
+          },
+          404: {
+            type: 'object',
+            required: ['message'],
+            properties: { message: { type: 'string' } },
+          },
+        },
+      },
+    },
     async (request: any, reply: FastifyReply) => {
       const user = await prisma.user.findUnique({
         where: { id: request.user.userId },

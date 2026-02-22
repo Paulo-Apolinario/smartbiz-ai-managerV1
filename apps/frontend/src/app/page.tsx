@@ -151,8 +151,8 @@ export default function HomePage() {
 
             {/* Right (mock) — ocupa melhor a tela */}
             <div className="relative">
-              <div className="absolute -inset-2 rounded-[2rem] bg-[linear-gradient(135deg,hsl(var(--primary)/0.22),transparent_55%,hsl(var(--primary)/0.10))] blur-2xl" />
-              <div className="relative rounded-[2rem] border bg-background/45 p-4 shadow-sm backdrop-blur">
+              <div className="absolute -inset-2 rounded-[32 px] bg-[linear-gradient(135deg,hsl(var(--primary)/0.22),transparent_55%,hsl(var(--primary)/0.10))] blur-2xl" />
+              <div className="relative rounded-[32 px] border bg-background/45 p-4 shadow-sm backdrop-blur">
                 <div className="rounded-2xl border bg-background/70 p-4 shadow-sm">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">Visão geral</p>

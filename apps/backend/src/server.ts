@@ -1,4 +1,9 @@
 import { app } from './app'
+import { prisma } from './lib/prisma'
+
+app.get('/tenants', async () => {
+  return prisma.tenant.findMany()
+})
 
 const start = async () => {
   try {

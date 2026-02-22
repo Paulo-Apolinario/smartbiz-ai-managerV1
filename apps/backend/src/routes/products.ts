@@ -9,7 +9,27 @@ export async function productRoutes(app: FastifyInstance) {
   app.get(
     '/',
     {
-      preHandler: [authMiddleware]
+      preHandler: [authMiddleware],
+      schema: {
+        description: 'Lista todos os produtos.',
+        tags: ['Products'],
+        security: [{ bearerAuth: [] }], // 🔑 exige token
+        response: {
+          200: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                name: { type: 'string' },
+                price: { type: 'number' },
+                stock: { type: 'number' },
+                tenantId: { type: 'string' }
+              }
+            }
+          }
+        }
+      }
     },
     async (request: any, reply: FastifyReply) => {
       const products = await prisma.product.findMany({
@@ -26,10 +46,35 @@ export async function productRoutes(app: FastifyInstance) {
   app.post(
     '/',
     {
-      preHandler: [authMiddleware, authorize(['ADMIN', 'MANAGER'])]
+      preHandler: [authMiddleware, authorize(['ADMIN', 'MANAGER'])],
+      schema: {
+        description: 'Cria um novo produto (ADMIN e MANAGER)',
+        tags: ['Products'],
+        security: [{ bearerAuth: [] }], // 🔑 exige token
+        body: {
+          type: 'object',
+          required: ['name', 'price', 'stock'],
+          properties: {
+            name: { type: 'string' },
+            price: { type: 'number' },
+            stock: { type: 'number' }
+          }
+        },
+        response: {
+          201: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              price: { type: 'number' },
+              stock: { type: 'number' },
+              tenantId: { type: 'string' }
+            }
+          }
+        }
+      }
     },
     async (request: any, reply: FastifyReply) => {
-
       const { name, price, stock } = request.body as {
         name: string
         price: number

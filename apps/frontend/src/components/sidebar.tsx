@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, ShoppingBag, Users, Receipt, UserCog } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Users, Receipt, UserCog, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
@@ -20,12 +20,15 @@ export function Sidebar() {
     <aside className="hidden md:flex h-screen w-64 flex-col border-r bg-background">
       <div className="px-6 py-5">
         <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-xl bg-primary/15 flex items-center justify-center">
+          <div className="h-10 w-10 rounded-xl bg-primary/15 flex items-center justify-center">
             <span className="text-primary font-bold">SB</span>
           </div>
           <div>
+            <span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background px-2 py-0.5 text-[11px] text-muted-foreground">
+              <Sparkles className="h-5 w-5" />
             <p className="text-sm font-semibold leading-none">SmartBiz AI</p>
-            <p className="text-xs text-muted-foreground">Painel administrativo</p>
+             
+            </span>
           </div>
         </div>
       </div>

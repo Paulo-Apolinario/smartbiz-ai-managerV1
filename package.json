@@ -8,13 +8,17 @@
     "apps/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:frontend": "pnpm -C apps/frontend dev",
+    "dev:backend": "pnpm -C apps/backend dev",
+    "dev": "pnpm -r --parallel dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.29.3",
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-slot": "^1.2.4",
     "bcrypt": "^6.0.0"
   }
 }

@@ -2,6 +2,7 @@ import { Sidebar } from '@/components/sidebar'
 import { Topbar } from '@/components/topbar'
 import { Chatbot } from '@/components/chatbot'
 
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
